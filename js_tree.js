@@ -45,8 +45,48 @@ var wsCount = 0;
 //When the window loads it will run the makeTree function.
 window.onload = makeTree;
 
+//This function will create the node tree.
 function makeTree() {
-      var asideElem = ""
+      var treeBox = document.createElement("aside");
+      treeBox.id = "treeBox";
+      treeBox.innerHTML = "<h1>Node Tree</h1>";
+
+      var mainSection = document.getElementById("main");
+      mainSection.appendChild(treeBox);
+
+      var nodeList = document.createElement("ol");
+      treeBox.appendChild(nodeList);
+      var sourceArticle = document.querySelectorAll("#main article");
+      makeBranches(sourceArticle, nodeList);
+}
+
+//This function will append branches to the node tree.
+function makeBranches(treeNode, nestedList) {
+      nodeCount++;
+      var liElem = document.createElement("li");
+      liElem.innerHTML = "+--";
+      var spanElem = document.createElement("span");
+      liElem.appendChild(spanElem);
+      nestedList.appendChild(liElem);
+}
+
+if (treeNode.nodeType === 1) {
+      elementCount++;
+      spanElem.setAttribute("class", "elementNode");
+      spanElem.textContent("<" + treeNode.nodeName + ">");
+} else if (treeNode.nodeType === 3) {
+      textCount++;
+      var textString = treeNode.nodeValue;
+
+
+      if (isWhiteSpaceNode(textString)) {
+            wsCount++;
+            spanElem.setAttribute("class", "whiteSpaceNode");
+            spanElem.textContent("#text");
+      } else {
+            spanElem.setAttribute("class", "textNode")
+            spanElem.textContent = textString
+      }
 }
 
 
