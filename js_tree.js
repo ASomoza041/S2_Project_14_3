@@ -76,15 +76,17 @@ function makeBranches(treeNode, nestedList) {
       liElem.appendChild(spanElem);
       nestedList.appendChild(liElem);
 
+      //adds a branch ands adds one to the elemCount counter when the node is an element
       if (treeNode.nodeType === 1) {
             elemCount++;
             spanElem.setAttribute("class", "elementNode");
             spanElem.textContent = "<" + treeNode.nodeName + ">";
+            //adds a branch ands adds one to the textCount counter when the node is an a text string.
       } else if (treeNode.nodeType === 3) {
             textCount++;
             var textString = treeNode.nodeValue;
 
-
+            //increases the white space counter using the isWhiteSpaceNode function.
             if (isWhiteSpaceNode(textString)) {
                   wsCount++;
                   spanElem.setAttribute("class", "whiteSpaceNode");
@@ -95,6 +97,7 @@ function makeBranches(treeNode, nestedList) {
             }
       }
 
+      //Will create a new ol for every new level, creating a tree effect.
       if (treeNode.childNodes.length > 0) {
             var newList = document.createElement("ol");
             newList.innerHTML = "|";
