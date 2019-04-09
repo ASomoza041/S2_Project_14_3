@@ -38,7 +38,7 @@
 */
 //These global variable will keep track of nodes within the document
 var nodeCount = 0;
-var elementCount = 0;
+var elemCount = 0;
 var textCount = 0;
 var wsCount = 0;
 
@@ -56,8 +56,15 @@ function makeTree() {
 
       var nodeList = document.createElement("ol");
       treeBox.appendChild(nodeList);
-      var sourceArticle = document.querySelectorAll("#main article");
+      var sourceArticle = document.querySelector("#main article");
       makeBranches(sourceArticle, nodeList);
+
+      document.getElementById("totalNodes").textContent = nodeCount;
+      document.getElementById("elemNodes").textContent = elemCount;
+      document.getElementById("textNodes").textContent = textCount;
+      document.getElementById("wsNodes").textContent = wsCount;
+
+
 }
 
 //This function will append branches to the node tree.
@@ -68,29 +75,35 @@ function makeBranches(treeNode, nestedList) {
       var spanElem = document.createElement("span");
       liElem.appendChild(spanElem);
       nestedList.appendChild(liElem);
-}
 
-if (treeNode.nodeType === 1) {
-      elementCount++;
-      spanElem.setAttribute("class", "elementNode");
-      spanElem.textContent("<" + treeNode.nodeName + ">");
-} else if (treeNode.nodeType === 3) {
-      textCount++;
-      var textString = treeNode.nodeValue;
+      if (treeNode.nodeType === 1) {
+            elemCount++;
+            spanElem.setAttribute("class", "elementNode");
+            spanElem.textContent = "<" + treeNode.nodeName + ">";
+      } else if (treeNode.nodeType === 3) {
+            textCount++;
+            var textString = treeNode.nodeValue;
 
 
-      if (isWhiteSpaceNode(textString)) {
-            wsCount++;
-            spanElem.setAttribute("class", "whiteSpaceNode");
-            spanElem.textContent("#text");
-      } else {
-            spanElem.setAttribute("class", "textNode")
-            spanElem.textContent = textString
+            if (isWhiteSpaceNode(textString)) {
+                  wsCount++;
+                  spanElem.setAttribute("class", "whiteSpaceNode");
+                  spanElem.textContent = "#text";
+            } else {
+                  spanElem.setAttribute("class", "textNode")
+                  spanElem.textContent = textString;
+            }
+      }
+
+      if (treeNode.childNodes.length > 0) {
+            var newList = document.createElement("ol");
+            newList.innerHTML = "|";
+            nestedList.appendChild(newList);
+            for (var n = treeNode.firstChild; n !== null; n = n.nextSibling) {
+                  makeBranches(n, newList);
+            }
       }
 }
-
-
-
 
 
 
